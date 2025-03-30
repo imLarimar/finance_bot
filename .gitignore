@@ -1,4 +1,4 @@
 .env
 .venv
 .vscode
-db.py
+database.db
