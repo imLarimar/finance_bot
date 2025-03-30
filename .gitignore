@@ -1,5 +1,6 @@
 .env
 .venv
 .vscode
+__pycache__/
 bot.log
 database.db
