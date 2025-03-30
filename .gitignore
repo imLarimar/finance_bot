@@ -2,7 +2,7 @@
 .venv
 .vscode
 __pycache__/
-.log
-.pyc
-.pyo
+*.log
+*.pyc
+*.pyo
 database.db
