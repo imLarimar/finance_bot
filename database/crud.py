@@ -1,9 +1,16 @@
 from typing import Optional
 from datetime import date
 
+from sqlalchemy import exists, select
+
 from .models import User, Transaction
 from .db import async_session
 
+
+async def exists_user(user_id: int) -> bool:
+    async with async_session() as session:
+        result = await session.execute(select(exists().where(User.user_id == user_id)))
+        return result.scalar_one_or_none()
 
 async def add_user(user_id: int):
     async with async_session() as session:
