@@ -18,11 +18,16 @@ async def main():
         await init_db()
         logger.info("Бот запущен.")
         await dp.start_polling(bot)
-    except Exception() as err:
-        logger.error(err)
+    except Exception as e:
+        logger.exception(e)
     finally:
         await close_db()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Бот остановлен пользователем.")
+    except Exception as err:
+        logger.exception("Ошибка на самом верхнем уровне")
