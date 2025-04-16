@@ -6,11 +6,14 @@ from core.logger import logger
 from core.config import BOT_TOKEN
 from database.db import init_db, close_db
 from handlers import all_routers
+from middlewares.db_session import DBSessionMiddleware
 
 async def main():
     bot = Bot(BOT_TOKEN)
     dp = Dispatcher()
     
+    dp.update.middleware(DBSessionMiddleware())
+
     for router in all_routers:
         dp.include_router(router)
     
@@ -27,7 +30,5 @@ async def main():
 if __name__ == "__main__":
     try:
         asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.info("Бот остановлен пользователем.")
     except Exception as err:
         logger.exception("Ошибка на самом верхнем уровне")

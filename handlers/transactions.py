@@ -1,5 +1,7 @@
 from aiogram import Router, types
 from aiogram.filters import Command
+from sqlalchemy.ext.asyncio import AsyncSession
+
 
 from database.crud import add_transaction
 from core.logger import logger
@@ -7,7 +9,7 @@ from core.logger import logger
 add_transaction_router = Router()
 
 @add_transaction_router.message(Command("add_transaction"))
-async def add_transaction_func(message: types.Message):
+async def add_transaction_func(message: types.Message, db_session: AsyncSession):
     _, _, args = message.text.partition(" ")
 
     if not args:
@@ -23,7 +25,7 @@ async def add_transaction_func(message: types.Message):
 
     try:
         user_id = message.from_user.id
-        await add_transaction(user_id, amount, category)
+        await add_transaction(user_id, amount, category, db_session)
         logger.info(f"Транзакция: {user_id} | {amount} | {category}")
         await message.reply(f"Транзакция на {amount}₽ в категории '{category}' успешно добавлена!")
     except Exception as err:
